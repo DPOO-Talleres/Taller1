@@ -1,10 +1,19 @@
 package Consola;
 
-//import Logica.Restaurante;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Collection;
+
+
+import Logica.Restaurante;
 
 public class Aplicacion {
 
-//	private Restaurante restaurante;
+private Restaurante restaurante;
+
+private Restaurante menu;
 	
 	public void ejecutarAplicacion()
 	{
@@ -16,9 +25,9 @@ public class Aplicacion {
 			try
 			{
 				mostrarMenu();
-//				int opcion_seleccionada = Integer.parseInt(input("Por favor seleccione una opción"));
-//				if (opcion_seleccionada == 1)
-//					ejecutarCargarAtletas();
+				int opcion_seleccionada = Integer.parseInt(input("Por favor seleccione una opción"));
+				if (opcion_seleccionada == 1)
+					cargarMenu();
 //				else if (opcion_seleccionada == 2 && calculadora != null)
 //					ejecutarAtletasPorAnio();
 //				else if (opcion_seleccionada == 3 && calculadora != null)
@@ -43,11 +52,11 @@ public class Aplicacion {
 //					ejecutarPorcentajeMedallistas();
 //				else if (opcion_seleccionada == 13 && calculadora != null)
 //					paisQueRepresentaElAtleta();
-//				else if (opcion_seleccionada == 14)
-//				{
-//					System.out.println("Saliendo de la aplicación ...");
-//					continuar = false;
-//				}
+				else if (opcion_seleccionada == 6)
+				{
+					System.out.println("Saliendo de la aplicación ...");
+					continuar = false;
+				}
 //				else if (calculadora == null)
 //				{
 //					System.out.println("Para poder ejecutar esta opción primero debe cargar un archivo de atletas.");
@@ -75,5 +84,48 @@ public class Aplicacion {
 		System.out.println("6. Salir de la aplicación\n");
 	}
 
-
+	public void cargarMenu()
+	{
+		System.out.println("\n" + "Cargar menu" + "\n");
+		
+//		String archivoIngrediente = input("Por favor ingrese el nombre del archivo CSV con el menu");
+//		String archivoCombos = input("Por favor ingrese el nombre del archivo CSV con el menu");
+		String archivoMenu = input("Por favor ingrese el nombre del archivo CSV con el menu");
+		try
+		{
+			Restaurante.cargarMenu(archivoMenu);
+			System.out.println("se cargo el archivo");
+		}
+		catch (FileNotFoundException e)
+		{
+			System.out.println("ERROR: el archivo indicado no se encontró.");
+		}
+		catch (IOException e)
+		{
+			System.out.println("ERROR: hubo un problema leyendo el archivo.");
+			System.out.println(e.getMessage());
+		}
+	}
+	
+	public String input(String mensaje)
+	{
+		try
+		{
+			System.out.print(mensaje + ": ");
+			BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+			return reader.readLine();
+		}
+		catch (IOException e)
+		{
+			System.out.println("Error leyendo de la consola");
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public static void main(String[] args)
+	{
+		Aplicacion consola = new Aplicacion();
+		consola.ejecutarAplicacion();
+	}
 }
