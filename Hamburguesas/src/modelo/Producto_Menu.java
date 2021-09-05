@@ -24,6 +24,7 @@ public class Producto_Menu {
 	{
 		return precioBase;
 	}
+
 	
 //	public String generarFactura()
 //	{

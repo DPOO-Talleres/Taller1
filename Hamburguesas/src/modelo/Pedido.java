@@ -1,5 +1,6 @@
 package modelo;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Pedido {
@@ -13,6 +14,8 @@ public class Pedido {
 	private String direccionCliente;
 	
 	private List<Producto> productos;
+	
+	public boolean listo=false;
 	
 	public Pedido (String pnombreCliente, String pdireccionCliente )
 	{
@@ -30,6 +33,10 @@ public class Pedido {
 		productos.add(nuevoItem);
 	}
 	
+	public ArrayList<Producto> listaDeProductos()
+	{
+		return (ArrayList<Producto>) productos;
+	}
 	
 	public int getPrecioNetoPedido()
 	{
@@ -72,6 +79,7 @@ public class Pedido {
 	
 	public String generarTextoFactura()
 	{
+		listo=true;
 		System.out.println("              +++++++++++++++ FACTURA +++++++++++++++          ");
 		System.out.println("Id Pedido: "+idPedido);
 		System.out.println("Nombre Cliente: "+nombreCliente);
