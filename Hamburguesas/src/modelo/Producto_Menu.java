@@ -4,11 +4,11 @@ public class Producto_Menu {
 	
 	private String nombre;
 	
-	private int precioBase;
+	private String precioBase;
 	
 	private Producto producto;
 	
-	public Producto_Menu(String pnombre, int pPrecioBase)
+	public Producto_Menu(String pnombre, String pPrecioBase)
 	{
 		nombre=pnombre;
 		
@@ -20,7 +20,7 @@ public class Producto_Menu {
 		return nombre;
 	}
 	
-	public int getPrecioBase()
+	public String getPrecioBase()
 	{
 		return precioBase;
 	}

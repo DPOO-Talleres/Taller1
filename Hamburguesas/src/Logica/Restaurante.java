@@ -26,11 +26,23 @@ public class Restaurante
 	// ************************
 	private static ArrayList<Ingrediente> ingredientes;
 	
-	private static ArrayList<Producto_Menu> menu;
+	public static ArrayList<Producto_Menu> menu;
 	
 	private static ArrayList<Combo> combos;
 	
 	private List<Pedido> pedido;
+	
+	private ArrayList<Restaurante> restaurante = null;
+	
+	public static Map<String, Producto_Menu> menus1= new HashMap<>();
+	
+	public static Map<String, Combo> combos2= new HashMap<>();
+	
+	public static Map<String, Ingrediente> ingredientes2 = new HashMap<>();
+	
+	public static Map<Integer, Pedido> pedidos = new HashMap<>();
+	
+	
 	
 	public Restaurante(Map<String, Ingrediente> ingredientes, Map<String, Producto_Menu> menu, Map<String, Combo> combos)
 	{
@@ -91,11 +103,13 @@ public class Restaurante
 	}
 	
 	
-	public static void cargarInformacionRestaurante (String ArchivoIngrediente, String ArchivoMenu, String ArchivoCombos) throws FileNotFoundException, IOException
+	public static Restaurante cargarInformacionRestaurante (String ArchivoIngrediente, String ArchivoMenu, String ArchivoCombos) throws FileNotFoundException, IOException
 	{
 		cargarIngredientes(ArchivoIngrediente);
 		cargarMenu(ArchivoMenu);
 		cargarCombo(ArchivoCombos);
+		Restaurante restaura= new Restaurante(ingredientes2,menus1,combos2);
+		return restaura;
 	}
 	
 	
@@ -103,20 +117,22 @@ public class Restaurante
 	public static void cargarIngredientes(String nombreArchivo) throws FileNotFoundException, IOException
 	{
 		Map<String, Ingrediente> ingredientes1 = new HashMap<>();
+
 		BufferedReader br = new BufferedReader(new FileReader(nombreArchivo));
 		String linea = br.readLine();
 		linea = br.readLine();
 		while (linea != null)
 		{
-			String[] partes = linea.split(",");
+			String[] partes = linea.split(";");
 			String nombreIngrediente = partes[0];
-			int precio = Integer.parseInt(partes[1]);
+			String precio = partes[1];
 			linea = br.readLine();
 			
 			Ingrediente ingrediente = new Ingrediente(nombreIngrediente, precio);
 			ingredientes1.put(ingrediente.darNombre(), ingrediente);
+			
+			ingredientes2.put(ingrediente.darNombre(), ingrediente);
 		
-			ingredientes.add((Ingrediente) ingredientes1);
 		}
 			
 		br.close();
@@ -130,17 +146,19 @@ public class Restaurante
 		linea = br.readLine();
 		while (linea != null)
 		{
-			String[] partes = linea.split(",");
+			String[] partes = linea.split(";");
 			String nombreMenu = partes[0];
-			int precio = Integer.parseInt(partes[1]);
+			String precio = partes[1];
 			linea = br.readLine();
 			
 			Producto_Menu productomenu = new Producto_Menu(nombreMenu, precio);
 			menus.put(productomenu.getNombre(), productomenu);
-			
-			menu.add((Producto_Menu) menus);
+
+			menus1.put(productomenu.getNombre(), productomenu);
 		}
+		
 		br.close();
+		
 	}
 	
 	public static void cargarCombo(String nombreArchivo) throws FileNotFoundException, IOException
@@ -151,17 +169,36 @@ public class Restaurante
 		linea = br.readLine();
 		while (linea != null)
 		{
-			String[] partes = linea.split(",");
+			String[] partes = linea.split(";");
 			String nombreCombo = partes[0];
-			double precio = Double.parseDouble(partes[1]);
+			String precio = partes[1];
 			linea = br.readLine();
 			
 			Combo combo = new Combo(nombreCombo, precio);
 			combos1.put(combo.getNombreCombo(), combo);
 			
-			combos.add((Combo) combos1);
+			combos2.put(combo.getNombreCombo(), combo);
 		}
 		br.close();
+	}
+	
+	public static void crearPedido(String pNombreCliente, String pDireccionCliente)
+	{
+		Pedido pedido1 = new Pedido(pNombreCliente, pDireccionCliente);
+		
+		pedidos.put(pedido1.getId(), pedido1);
+	}
+	
+	public static int validaInt(String number){
+	    int result = 0;
+	    try{
+	        if(number != null){
+	            result = Integer.parseInt(number);
+	        }
+	    }catch(NumberFormatException nfe){
+	        nfe.printStackTrace();
+	    }
+	    return result;
 	}
 	
 }

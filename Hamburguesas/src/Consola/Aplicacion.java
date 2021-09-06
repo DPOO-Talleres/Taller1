@@ -4,32 +4,37 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.Collection;
 
 
 import Logica.Restaurante;
+import modelo.Producto_Menu;
 
 public class Aplicacion {
 
 private Restaurante restaurante;
 
-private Restaurante menu;
+private ArrayList<Producto_Menu> menu;
+
+
+private ArrayList<Restaurante> restaurantes;
 	
-	public void ejecutarAplicacion()
+	public void ejecutarAplicacion() throws FileNotFoundException, IOException
 	{
 		System.out.println("Bienvenido al restaurante");
 
 		boolean continuar = true;
 		while (continuar)
 		{
-			try
-			{
+//			try
+//			{
 				mostrarMenu();
-				int opcion_seleccionada = Integer.parseInt(input("Por favor seleccione una opción"));
+				int opcion_seleccionada = Integer.parseInt(input("Por favor seleccione una opcion "));
 				if (opcion_seleccionada == 1)
 					cargarMenu();
-//				else if (opcion_seleccionada == 2 && calculadora != null)
-//					ejecutarAtletasPorAnio();
+				else if (opcion_seleccionada == 2 && restaurante != null)
+					iniciarPedido();
 //				else if (opcion_seleccionada == 3 && calculadora != null)
 //					ejecutarMedallasEnRango();
 //				else if (opcion_seleccionada == 4 && calculadora != null)
@@ -65,11 +70,11 @@ private Restaurante menu;
 //				{
 //					System.out.println("Por favor seleccione una opción válida.");
 //				}
-			}
-			catch (NumberFormatException e)
-			{
-				System.out.println("Debe seleccionar uno de los números de las opciones.");
-			}
+//			}
+//			catch (NumberFormatException e)
+//			{
+//				System.out.println("Debe seleccionar uno de los números de las opciones.");
+//			}
 		}
 		
 		}
@@ -84,27 +89,44 @@ private Restaurante menu;
 		System.out.println("6. Salir de la aplicación\n");
 	}
 
-	public void cargarMenu()
+	public void cargarMenu() throws FileNotFoundException, IOException
 	{
 		System.out.println("\n" + "Cargar menu" + "\n");
 		
-//		String archivoIngrediente = input("Por favor ingrese el nombre del archivo CSV con el menu");
-//		String archivoCombos = input("Por favor ingrese el nombre del archivo CSV con el menu");
+		String archivoIngrediente = input("Por favor ingrese el nombre del archivo CSV con el menu");
+		String archivoCombos = input("Por favor ingrese el nombre del archivo CSV con el menu");
 		String archivoMenu = input("Por favor ingrese el nombre del archivo CSV con el menu");
-		try
-		{
-			Restaurante.cargarMenu(archivoMenu);
-			System.out.println("se cargo el archivo");
-		}
-		catch (FileNotFoundException e)
-		{
-			System.out.println("ERROR: el archivo indicado no se encontró.");
-		}
-		catch (IOException e)
-		{
-			System.out.println("ERROR: hubo un problema leyendo el archivo.");
-			System.out.println(e.getMessage());
-		}
+		restaurante = Restaurante.cargarInformacionRestaurante(archivoIngrediente, archivoMenu, archivoCombos);
+		
+		System.out.println("se cargo el archivo");
+		
+//		try
+//		{
+//			
+//			menu = Restaurante.menu;
+//			
+//			System.out.println("se cargo el archivo");
+//		}
+//		catch (FileNotFoundException e)
+//		{
+//			System.out.println("ERROR: el archivo indicado no se encontró.");
+//		}
+//		catch (IOException e)
+//		{
+//			System.out.println("ERROR: hubo un problema leyendo el archivo.");
+//			System.out.println(e.getMessage());
+//		}
+	}
+	
+	public void iniciarPedido() 
+	{
+		System.out.println("\n" + "Iniciar pedido" + "\n");
+		
+		String nombreCliente = input("Ingrese su nombre");
+		String direccionCliente = input("Ingrese su Direccion");
+		Restaurante.crearPedido(nombreCliente, direccionCliente);
+		
+		System.out.println("\n" + "Pedido creado" + "\n");
 	}
 	
 	public String input(String mensaje)
@@ -123,7 +145,7 @@ private Restaurante menu;
 		return null;
 	}
 	
-	public static void main(String[] args)
+	public static void main(String[] args) throws FileNotFoundException, IOException
 	{
 		Aplicacion consola = new Aplicacion();
 		consola.ejecutarAplicacion();

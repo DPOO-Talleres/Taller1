@@ -2,18 +2,18 @@ package modelo;
 
 public class Combo {
 
-	private double descuento;
+	private String descuento;
 	
 	private String nombreCombo;
 	
-	public Combo (String pnombreCombo, double pdescuento)
+	public Combo (String pnombreCombo, String pdescuento)
 	{
 		descuento=pdescuento;
 		
 		nombreCombo=pnombreCombo;
 	}
 	
-	public double getDescuento()
+	public String getDescuento()
 	{
 		return descuento;
 	}

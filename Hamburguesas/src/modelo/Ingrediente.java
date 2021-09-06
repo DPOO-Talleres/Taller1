@@ -4,9 +4,9 @@ public class Ingrediente {
 	
 	private String nombre;
 	
-	private int costoAdicional;
+	private String costoAdicional;
 	
-	public Ingrediente(String pnombre, int pcostoAdicional) 
+	public Ingrediente(String pnombre, String pcostoAdicional) 
 	{
 		nombre = pnombre;
 		costoAdicional=pcostoAdicional;
@@ -17,7 +17,7 @@ public class Ingrediente {
 		return nombre;
 	}
 	
-	public int darCostoAdicional()
+	public String darCostoAdicional()
 	{
 		return costoAdicional;
 	}
