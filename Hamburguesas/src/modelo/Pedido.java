@@ -3,6 +3,8 @@ package modelo;
 import java.util.ArrayList;
 import java.util.List;
 
+import Logica.Restaurante;
+
 public class Pedido {
 
 	private int numeroPedidos;
@@ -13,7 +15,9 @@ public class Pedido {
 	
 	private String direccionCliente;
 	
-	private List<Producto> productos;
+	private Restaurante restaurante;
+	
+	private ArrayList<Producto_Menu> productos=new ArrayList<>();
 	
 	public boolean listo=false;
 	
@@ -25,17 +29,26 @@ public class Pedido {
 	
 	public int getId()
 	{
+//		idPedido=restaurante.pedidos.size();
 		return idPedido;
 	}
 	
-	public void agregarProducto(Producto nuevoItem) 
+	public void agregarProducto(Producto_Menu nuevoItem) 
 	{
-		productos.add(nuevoItem);
+		if (restaurante.menus1.get(nuevoItem)!=null) 
+		{
+			productos.add(nuevoItem);
+		}
+		else
+		{
+			System.out.println("No se ha encontrado el producto");
+		}
+		
 	}
 	
-	public ArrayList<Producto> listaDeProductos()
+	public ArrayList<Producto_Menu> listaDeProductos()
 	{
-		return (ArrayList<Producto>) productos;
+		return (ArrayList<Producto_Menu>) productos;
 	}
 	
 	public int getPrecioNetoPedido()
@@ -44,7 +57,7 @@ public class Pedido {
 		
 		for (int i=0; i<=productos.size(); i++)
 		{
-			precioNetoPedido+= productos.get(i).getPrecio();
+			precioNetoPedido+= Integer.parseInt(productos.get(i).getPrecioBase()) ;
 		}
 
 		return precioNetoPedido;
@@ -56,7 +69,7 @@ public class Pedido {
 		
 		for(int i=0; i<=productos.size() ; i++)
 		{
-			int precioProducto= productos.get(i).getPrecio();
+			int precioProducto= Integer.parseInt(productos.get(i).getPrecioBase());
 			int precioProductoIVA = (int) (0.19*precioProducto); 
 			precioIVAPedido+=precioProductoIVA;
 		}
@@ -77,6 +90,11 @@ public class Pedido {
 		return precioTotalPedido;
 	}
 	
+	public boolean darEstado()
+	{
+		return listo;
+	}
+	
 	public String generarTextoFactura()
 	{
 		listo=true;
@@ -86,7 +104,24 @@ public class Pedido {
 		System.out.println("Dirección: "+direccionCliente);
 		for (int i=0; i<=productos.size(); i++) 
 		{
-			System.out.println("Nombre producto: "+productos.get(i).getNombre() + "          Precio: "+productos.get(i).getPrecio());
+			System.out.println("Nombre producto: "+productos.get(i).getNombre() + "          Precio: "+productos.get(i).getPrecioBase());
+		}
+		System.out.println("Precio Neto del pedido: "+getPrecioNetoPedido());
+		System.out.println("Precio IVA del pedido: "+getPrecioIVAPedido());
+		System.out.println("Precio Total del pedido: "+getPrecioTotalPedido());
+		
+		return"";
+	}
+	
+	public String consultarInfoPedido()
+	{
+		System.out.println("              +++++++++++++++ INFO PEDIDO +++++++++++++++          ");
+		System.out.println("Id Pedido: "+idPedido);
+		System.out.println("Nombre Cliente: "+nombreCliente);
+		System.out.println("Dirección: "+direccionCliente);
+		for (int i=0; i<=productos.size(); i++) 
+		{
+			System.out.println("Nombre producto: "+productos.get(i).getNombre() + "          Precio: "+productos.get(i).getPrecioBase());
 		}
 		System.out.println("Precio Neto del pedido: "+getPrecioNetoPedido());
 		System.out.println("Precio IVA del pedido: "+getPrecioIVAPedido());

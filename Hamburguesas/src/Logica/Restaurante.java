@@ -42,6 +42,9 @@ public class Restaurante
 	
 	public static Map<Integer, Pedido> pedidos = new HashMap<>();
 	
+	public static Map<Integer, Pedido> pedidosTerminados = new HashMap<>();
+	
+	
 	
 	
 	public Restaurante(Map<String, Ingrediente> ingredientes, Map<String, Producto_Menu> menu, Map<String, Combo> combos)
@@ -57,16 +60,6 @@ public class Restaurante
 		pedido.add(pedidos);
 	}
 	
-	public void guardarCerrarPedido()
-	{
-		for (int i = 0; i<=pedido.size(); i++)
-		{
-			if(pedido.get(i).listo=true) 
-			{
-				pedido.remove(pedido.get(i));
-			}
-		}
-	}
 	
 	public Pedido getPedidoEnCurso()
 	{
@@ -182,13 +175,51 @@ public class Restaurante
 		br.close();
 	}
 	
-	public static void crearPedido(String pNombreCliente, String pDireccionCliente)
+	public static int crearPedido(String pNombreCliente, String pDireccionCliente)
 	{
 		Pedido pedido1 = new Pedido(pNombreCliente, pDireccionCliente);
 		
 		pedidos.put(pedido1.getId(), pedido1);
+		
+		return pedido1.getId();
 	}
 	
+	public static Pedido buscarPedido(int idPedido)
+	{
+		Pedido pedido1 = new Pedido(null, null);
+		pedido1= pedidos.get(idPedido);
+		return pedido1;
+	}
+	
+	public static void agregarProductoAlPedido(int idPedido, String Producto)
+	{
+		Pedido pedido1 = new Pedido(null, null);
+		pedido1=buscarPedido(idPedido);
+		Producto_Menu producto1= new Producto_Menu(null,null);
+		producto1=menus1.get(Producto);
+		pedido1.agregarProducto(producto1);
+		
+	}
+	
+	public static void generarFactura(int id)
+	{
+		Pedido pedido1=buscarPedido(id);
+		pedido1.generarTextoFactura();
+	}
+	
+	public void guardarCerrarPedido()
+	{
+		this.pedidos.put(pedidos.get(pedidos).getId(),(Pedido) pedidos );
+		this.pedidos.remove(pedidos);
+		
+//		for (int i = 0; i<=pedido.size(); i++)
+//		{
+//			if(pedido.get(i).listo=true) 
+//			{
+//				pedido.remove(pedido.get(i));
+//			}
+//		}
+	}
 	public static int validaInt(String number){
 	    int result = 0;
 	    try{

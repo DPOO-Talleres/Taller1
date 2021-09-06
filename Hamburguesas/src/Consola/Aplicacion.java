@@ -9,6 +9,7 @@ import java.util.Collection;
 
 
 import Logica.Restaurante;
+import modelo.Pedido;
 import modelo.Producto_Menu;
 
 public class Aplicacion {
@@ -35,12 +36,12 @@ private ArrayList<Restaurante> restaurantes;
 					cargarMenu();
 				else if (opcion_seleccionada == 2 && restaurante != null)
 					iniciarPedido();
-//				else if (opcion_seleccionada == 3 && calculadora != null)
-//					ejecutarMedallasEnRango();
-//				else if (opcion_seleccionada == 4 && calculadora != null)
-//					ejecutarAtletasPorPais();
-//				else if (opcion_seleccionada == 5 && calculadora != null)
-//					ejecutarPaisConMasMedallistas();
+				else if (opcion_seleccionada == 3 && restaurante != null)
+					agregarElementoAlPedido();
+				else if (opcion_seleccionada == 4 && restaurante != null)
+					CerrarPedido();
+				else if (opcion_seleccionada == 5 && restaurante != null)
+					consultarInfoPedido();
 //				else if (opcion_seleccionada == 6 && calculadora != null)
 //					ejecutarMedallistasPorEvento();
 //				else if (opcion_seleccionada == 7 && calculadora != null)
@@ -124,9 +125,47 @@ private ArrayList<Restaurante> restaurantes;
 		
 		String nombreCliente = input("Ingrese su nombre");
 		String direccionCliente = input("Ingrese su Direccion");
-		Restaurante.crearPedido(nombreCliente, direccionCliente);
+		int id=Restaurante.crearPedido(nombreCliente, direccionCliente);
+		
 		
 		System.out.println("\n" + "Pedido creado" + "\n");
+		System.out.println("\n" + "El id del pedido es: " + id + "\n");
+	}
+	
+	public void agregarElementoAlPedido()
+	{
+		System.out.println("\n" + "Agregar elemento al pedido" + "\n");
+		
+		Pedido pedido1= new Pedido(null,null);
+		int id =Integer.parseInt(input("Ingrese el id del pedido"));
+		String producto = input("Ingrese el producto");
+		Restaurante.agregarProductoAlPedido(id, producto);
+		
+		System.out.println("\n" + "El producto: " + producto+ "\n"+"Ha sido agregado al pedido: "+id+"\n");
+	}
+	
+	public void CerrarPedido()
+	{
+		System.out.println("\n" + "Cerrar pedido" + "\n");
+		Pedido pedido1= new Pedido(null,null);
+		int id =Integer.parseInt(input("Ingrese el id del pedido"));
+		pedido1=Restaurante.buscarPedido(id);
+		pedido1.generarTextoFactura();
+		if(pedido1.darEstado()==true)
+		{
+			restaurante.pedidosTerminados.put(pedido1.getId(), pedido1);
+			restaurante.pedidos.remove(pedido1.getId());
+		}
+		
+	}
+	
+	public void consultarInfoPedido()
+	{
+		System.out.println("\n" + "Consultar info pedido" + "\n");
+		Pedido pedido1= new Pedido(null,null);
+		int id =Integer.parseInt(input("Ingrese el id del pedido"));
+		pedido1=Restaurante.buscarPedido(id);
+		pedido1.consultarInfoPedido();
 	}
 	
 	public String input(String mensaje)
